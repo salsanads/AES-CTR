@@ -8,6 +8,8 @@ public class Frame extends JFrame {
     private static JPanel container;
     private static JButton button;
 
+    private static MessageComponent messageComponent;
+
     public Frame() {
         size = new Dimension(400, 300);
 
@@ -36,6 +38,11 @@ public class Frame extends JFrame {
 //
 //        container.add(button);
 
+        messageComponent = new MessageComponent();
+
+        container.add(button);
+        container.add(messageComponent);
+
         FilePickerComponent filePicker = new FilePickerComponent("Pick a file", "Browse...");
         filePicker.setMode(FilePickerComponent.MODE_OPEN);
 
@@ -43,10 +50,14 @@ public class Frame extends JFrame {
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(520, 100);
-        setLocationRelativeTo(null);    // center on screen
+        setLocationRelativeTo(null);
     }
 
     public static void main(String[] args) {
         new Frame();
+    }
+
+    public static MessageComponent getMessageComponent() {
+        return messageComponent;
     }
 }

@@ -1,10 +1,16 @@
 package cis.app;
 
+import cis.view.Frame;
+
+import javax.swing.*;
+import java.awt.*;
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
 
 public class ByteUtil {
     private static final int AES_BLOCK_SIZE = 16;
+
+    private final static JLabel messageField = Frame.getMessageComponent().getMessageField();
 
     static byte intHexToByte(int x) {
         byte[] arrayByte = ByteBuffer.allocate(Integer.BYTES).putInt(x).array();
@@ -15,8 +21,8 @@ public class ByteUtil {
         byte[] bigIntByte = bigInt.toByteArray();
         byte[] result = new byte[AES_BLOCK_SIZE];
         if (bigIntByte.length > AES_BLOCK_SIZE) {
-            // exceed the size
-            System.out.println("Exceed the Size");
+            messageField.setForeground(Color.RED);
+            messageField.setText("Cannot continue the process, the counter is exceed 16 bytes.");
             return null;
         }
         System.arraycopy(bigIntByte, 0, result, AES_BLOCK_SIZE - bigIntByte.length, bigIntByte.length);
