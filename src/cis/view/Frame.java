@@ -28,13 +28,22 @@ public class Frame extends JFrame {
         container.setBackground(Color.BLACK);
         container.setPreferredSize(size);
 
-        button = new JButton("Encrypt!");
-        button.setForeground(Color.WHITE);
-        button.setFont(new Font("SansSerif", Font.PLAIN, 48));
-        button.setOpaque(false);
-        button.setContentAreaFilled(false);
+//        button = new JButton("Encrypt!");
+//        button.setForeground(Color.WHITE);
+//        button.setFont(new Font("SansSerif", Font.PLAIN, 48));
+//        button.setOpaque(false);
+//        button.setContentAreaFilled(false);
+//
+//        container.add(button);
 
-        container.add(button);
+        FilePickerComponent filePicker = new FilePickerComponent("Pick a file", "Browse...");
+        filePicker.setMode(FilePickerComponent.MODE_OPEN);
+
+        container.add(filePicker);
+
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(520, 100);
+        setLocationRelativeTo(null);    // center on screen
     }
 
     public static void main(String[] args) {
