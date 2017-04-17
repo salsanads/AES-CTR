@@ -4,12 +4,11 @@ import java.math.BigInteger;
 import java.nio.ByteBuffer;
 
 public class ByteUtil {
-    private static ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES);
     private static final int AES_BLOCK_SIZE = 16;
 
-    static byte[] longToBytes(long x) {
-        buffer.putLong(0, x);
-        return buffer.array();
+    static byte intHexToByte(int x) {
+        byte[] arrayByte = ByteBuffer.allocate(Integer.BYTES).putInt(x).array();
+        return arrayByte[Integer.BYTES - 1];
     }
 
     static byte[] to16Bytes(BigInteger bigInt) {

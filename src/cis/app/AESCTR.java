@@ -40,8 +40,21 @@ public class AESCTR {
     }
 
     public byte[] decrypt(byte[] ciphertext, byte[] key) {
-        return encrypt(ciphertext, key);
-        // TO DO remove padding
+        byte[] paddedCiphertext = encrypt(ciphertext, key);
+        int numBlock = paddedCiphertext.length / BLOCK_SIZE_BYTES;
+        int firstIndexOfLastBlock = (numBlock - 1) * BLOCK_SIZE_BYTES;
+        byte[] lastBlock = Arrays.copyOfRange(paddedCiphertext, firstIndexOfLastBlock, paddedCiphertext.length);
+        for (int i = 1; i < BLOCK_SIZE_BYTES; i++) {
+            byte pad = ByteUtil.intHexToByte(i);
+            for (int j = BLOCK_SIZE_BYTES - 1; j > BLOCK_SIZE_BYTES - 1 - i; j--) {
+                if (lastBlock[j] != pad) {
+                    break;
+                } else if (lastBlock[j - 1] == pad) {
+                    return Arrays.copyOfRange(paddedCiphertext, 0, paddedCiphertext.length - i);
+                }
+            }
+        }
+        return paddedCiphertext;
     }
 
     public byte[] pkcs5Padding(byte[] initialBlock) {
