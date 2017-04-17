@@ -4,7 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 
 public class MessageComponent extends JPanel {
-
     private JLabel messageField;
 
     public MessageComponent() {

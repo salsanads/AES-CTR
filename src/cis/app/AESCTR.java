@@ -23,6 +23,11 @@ public class AESCTR {
 
         for (int i = 0; i < plaintext.length; i += BLOCK_SIZE_BYTES) {
             byte[] nonceArray = ByteUtil.to16Bytes(nonce);
+
+            if (nonceArray == null) {
+                return null;
+            }
+
             byte[] curPlainBlock;
             if (i == BLOCK_SIZE_BYTES * numBlock && numLeftBytes != 0) {
                 byte[] leftBytes = Arrays.copyOfRange(plaintext, i, i + numLeftBytes);
@@ -41,6 +46,11 @@ public class AESCTR {
 
     public byte[] decrypt(byte[] ciphertext, byte[] key) {
         byte[] paddedCiphertext = encrypt(ciphertext, key);
+
+        if (paddedCiphertext == null) {
+            return null;
+        }
+
         int numBlock = paddedCiphertext.length / BLOCK_SIZE_BYTES;
         int firstIndexOfLastBlock = (numBlock - 1) * BLOCK_SIZE_BYTES;
         byte[] lastBlock = Arrays.copyOfRange(paddedCiphertext, firstIndexOfLastBlock, paddedCiphertext.length);

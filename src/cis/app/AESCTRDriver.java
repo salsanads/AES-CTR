@@ -8,7 +8,6 @@ import java.awt.*;
 import java.io.*;
 
 public class AESCTRDriver {
-
     private final static AESCTR AESCTR = new AESCTR();
 
     private final static JLabel messageField = Frame.getMessageComponent().getMessageField();
@@ -28,7 +27,9 @@ public class AESCTRDriver {
             byte[] key = Util.hex2byte(keytext);
 
             byte[] ciphertext = AESCTR.encrypt(plaintext, key);
-            writeBytesToFile(ciphertext, ciphertextPath);
+            if (ciphertext != null) {
+                writeBytesToFile(ciphertext, ciphertextPath);
+            }
 
             messageField.setForeground(Color.GREEN);
             messageField.setText("Encryption succeed.");
@@ -43,7 +44,9 @@ public class AESCTRDriver {
             byte[] key = Util.hex2byte(keytext);
 
             byte[] plaintext = AESCTR.decrypt(ciphertext, key);
-            writeBytesToFile(plaintext, plaintextPath);
+            if (plaintext != null) {
+                writeBytesToFile(plaintext, plaintextPath);
+            }
 
             messageField.setForeground(Color.GREEN);
             messageField.setText("Decryption succeed.");
