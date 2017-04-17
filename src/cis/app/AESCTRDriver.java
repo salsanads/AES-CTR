@@ -1,22 +1,37 @@
 package cis.app;
 
 import cis.lib.Util;
+import cis.view.Frame;
 
+import javax.swing.*;
+import java.awt.*;
 import java.io.*;
 
 public class AESCTRDriver {
 
     private final static AESCTR AESCTR = new AESCTR();
 
+    private final static JLabel messageField = Frame.getMessageComponent().getMessageField();
+
     public static void doEncryption(String plaintextPath, String keyPath, String ciphertextPath) {
         byte[] plaintext = readBytesFromFile(plaintextPath);
+        if (plaintext == null) {
+            return;
+        }
+
         String keytext = readOneLineFromFile(keyPath);
+        if (keytext == null) {
+            return;
+        }
 
         if (isKeyValid(keytext)) {
             byte[] key = Util.hex2byte(keytext);
 
             byte[] ciphertext = AESCTR.encrypt(plaintext, key);
             writeBytesToFile(ciphertext, ciphertextPath);
+
+            messageField.setForeground(Color.GREEN);
+            messageField.setText("Encryption succeed.");
         }
     }
 
@@ -29,6 +44,9 @@ public class AESCTRDriver {
 
             byte[] plaintext = AESCTR.decrypt(ciphertext, key);
             writeBytesToFile(plaintext, plaintextPath);
+
+            messageField.setForeground(Color.GREEN);
+            messageField.setText("Decryption succeed.");
         }
     }
 
@@ -44,8 +62,10 @@ public class AESCTRDriver {
             fileInputStream = new FileInputStream(file);
             fileInputStream.read(bytesInput);
 
+        } catch (FileNotFoundException e) {
+            writeFileNotFoundMessage(filePath);
         } catch (IOException e) {
-            e.printStackTrace();
+            writeFailedReadingMessage(filePath);
         } finally {
             if (fileInputStream != null) {
                 try {
@@ -63,9 +83,10 @@ public class AESCTRDriver {
         try {
             BufferedReader br = new BufferedReader(new FileReader(filePath));
             return br.readLine();
-        } catch (Exception e) {
-            // TO DO: print error message
-            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            writeFileNotFoundMessage(filePath);
+        } catch (IOException e) {
+            writeFailedReadingMessage(filePath);
         }
         return null;
     }
@@ -75,24 +96,40 @@ public class AESCTRDriver {
             FileOutputStream fileOutputStream = new FileOutputStream(filePath);
             fileOutputStream.write(bytesArray);
             fileOutputStream.close();
+        } catch (FileNotFoundException e) {
+            writeFileNotFoundMessage(filePath);
         } catch (IOException e) {
-            e.printStackTrace();
+            writeFailedWritingMessage(filePath);
         }
     }
 
     private static boolean isKeyValid(String keytext) {
         int keylen = keytext.length();
 
-        if (! ((keylen == 32) || (keylen == 48) || (keylen == 64)) || (!Util.isHex(keytext))) {
-            // add error message to GUI
-//            lResult.setForeground(Color.red);
-//            lResult.setText("Error in Key!!!");
-//            taTrace.setForeground(Color.red);
-//            taTrace.setText("AES key [" + hexkey +
-//                    "] must be 32 or 48 or 64 hex digits long.");
-//            tResult.setText("");
+        if (! ((keylen == 32) || (keylen == 48) || (keylen == 64))) {
+            messageField.setForeground(Color.RED);
+            messageField.setText("AES key must be 32 or 48 or 64 long. But, [" + keytext + "] is " + keylen + " long.");
+            return false;
+        } else if (!Util.isHex(keytext)) {
+            messageField.setForeground(Color.RED);
+            messageField.setText("AES key must be hex digits.");
             return false;
         }
         return true;
+    }
+
+    private static void writeFileNotFoundMessage(String filePath) {
+        messageField.setForeground(Color.RED);
+        messageField.setText("File " + filePath + " is not found.");
+    }
+
+    private static void writeFailedReadingMessage(String filePath) {
+        messageField.setForeground(Color.RED);
+        messageField.setText("Failed reading " + filePath + ".");
+    }
+
+    private static void writeFailedWritingMessage(String filePath) {
+        messageField.setForeground(Color.RED);
+        messageField.setText("Failed writing " + filePath + ".");
     }
 }

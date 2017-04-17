@@ -8,6 +8,8 @@ public class Frame extends JFrame {
     private static JPanel container;
     private static JButton button;
 
+    private static MessageComponent messageComponent;
+
     public Frame() {
         size = new Dimension(400, 300);
 
@@ -34,10 +36,17 @@ public class Frame extends JFrame {
         button.setOpaque(false);
         button.setContentAreaFilled(false);
 
+        messageComponent = new MessageComponent();
+
         container.add(button);
+        container.add(messageComponent);
     }
 
     public static void main(String[] args) {
         new Frame();
+    }
+
+    public static MessageComponent getMessageComponent() {
+        return messageComponent;
     }
 }
