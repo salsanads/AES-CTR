@@ -9,6 +9,7 @@ public class Frame extends JFrame {
     private static JButton button;
 
     private static MessageComponent messageComponent;
+    private static OptionComponent optionComponent;
 
     public Frame() {
         size = new Dimension(400, 300);
@@ -39,9 +40,11 @@ public class Frame extends JFrame {
 //        container.add(button);
 
         messageComponent = new MessageComponent();
+        optionComponent = new OptionComponent();
 
         container.add(button);
         container.add(messageComponent);
+        container.add(optionComponent);
 
         FilePickerComponent filePicker = new FilePickerComponent("Pick a file", "Browse...");
         filePicker.setMode(FilePickerComponent.MODE_OPEN);
