@@ -38,7 +38,14 @@ public class AESCTRDriver {
 
     public static void doDecryption(String ciphertextPath, String keyPath, String plaintextPath) {
         byte[] ciphertext = readBytesFromFile(ciphertextPath);
+        if (ciphertext == null) {
+            return;
+        }
+
         String keytext = readOneLineFromFile(keyPath);
+        if (keytext == null) {
+            return;
+        }
 
         if (isKeyValid(keytext)) {
             byte[] key = Util.hex2byte(keytext);
@@ -55,7 +62,7 @@ public class AESCTRDriver {
 
     private static byte[] readBytesFromFile(String filePath) {
         FileInputStream fileInputStream = null;
-        byte[] bytesInput = null;
+        byte[] bytesInput;
 
         try {
 
@@ -67,8 +74,10 @@ public class AESCTRDriver {
 
         } catch (FileNotFoundException e) {
             writeFileNotFoundMessage(filePath);
+            return null;
         } catch (IOException e) {
             writeFailedReadingMessage(filePath);
+            return null;
         } finally {
             if (fileInputStream != null) {
                 try {

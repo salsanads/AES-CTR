@@ -11,9 +11,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 public class FilePickerComponent extends JPanel {
-    private String textFieldLabel;
-    private String buttonLabel;
-
     private JLabel label;
     private JTextField textField;
     private JButton button;
@@ -24,22 +21,23 @@ public class FilePickerComponent extends JPanel {
     public static final int MODE_OPEN = 1;
     public static final int MODE_SAVE = 2;
 
-    public FilePickerComponent(String textFieldLabel, String buttonLabel) {
-        this.textFieldLabel = textFieldLabel;
-        this.buttonLabel = buttonLabel;
-
+    public FilePickerComponent(String textFieldLabel, String buttonLabel, int mode) {
+        this.mode = mode;
         fileChooser = new JFileChooser();
 
-        setLayout(new FlowLayout(FlowLayout.CENTER, 30, 30));
+        setLayout(new FlowLayout(FlowLayout.CENTER, 30, 0));
+        setBackground(Color.BLACK);
 
         label = new JLabel(textFieldLabel);
+        label.setForeground(Color.WHITE);
 
         textField = new JTextField(30);
         button = new JButton(buttonLabel);
-        button.setBackground(Color.black);
+        button.setForeground(Color.WHITE);
         button.setFont(new Font("SansSerif", Font.PLAIN, 14));
         button.setOpaque(false);
         button.setContentAreaFilled(false);
+        button.setFocusPainted(false);
 
         button.addActionListener(new ActionListener() {
             @Override
@@ -66,15 +64,7 @@ public class FilePickerComponent extends JPanel {
         }
     }
 
-    public void setMode(int mode) {
-        this.mode = mode;
-    }
-
     public String getSelectedFilePath() {
         return textField.getText();
-    }
-
-    public JFileChooser getFileChooser() {
-        return this.fileChooser;
     }
 }
