@@ -3,10 +3,17 @@ package cis.view;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * The class to create title component - an object having a graphical representation
+ * that can be displayed on the screen as a title.
+ */
 public class TitleComponent extends JPanel {
     private JLabel title;
     private JLabel subTitle;
 
+    /**
+     * Constructs the title.
+     */
     public TitleComponent() {
         title = new JLabel("AES Calculator", SwingConstants.CENTER);
         title.setForeground(Color.WHITE);

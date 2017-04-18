@@ -5,9 +5,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.*;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.EmptyBorder;
 
+/**
+ * The class to create file picker component - an object having a graphical representation
+ * that can be displayed on the screen and that can interact with the user.
+ */
 public class FilePickerComponent extends JPanel {
     private JLabel label;
     private JTextField textField;
@@ -19,6 +21,13 @@ public class FilePickerComponent extends JPanel {
     public static final int MODE_OPEN = 1;
     public static final int MODE_SAVE = 2;
 
+    /**
+     * Constructs the file picker service with the specified text field label, button label, and mode.
+     *
+     * @param textFieldLabel a string label for the field, or null for no label.
+     * @param buttonLabel a string label for the button, or null for no label.
+     * @param mode an integer mode for the file picker mode.
+     */
     public FilePickerComponent(String textFieldLabel, String buttonLabel, int mode) {
         this.mode = mode;
         fileChooser = new JFileChooser();
@@ -56,6 +65,11 @@ public class FilePickerComponent extends JPanel {
 
     }
 
+    /**
+     * Invoked when an action occurs.
+     *
+     * @param evt the button you clicked.
+     */
     private void buttonActionPerformed(ActionEvent evt) {
         if (mode == MODE_OPEN) {
             if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
@@ -68,6 +82,11 @@ public class FilePickerComponent extends JPanel {
         }
     }
 
+    /**
+     * Gets a user selected path with a file picker.
+     *
+     * @return the path URL or null if the dialog is canceled.
+     */
     public String getSelectedFilePath() {
         return textField.getText();
     }

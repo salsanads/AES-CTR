@@ -7,6 +7,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * The frame to construct and display the content of the app.
+ */
 public class Frame extends JFrame implements ActionListener {
     private static Dimension size;
 
@@ -21,6 +24,9 @@ public class Frame extends JFrame implements ActionListener {
     private static ButtonComponent encryptionButton;
     private static ButtonComponent decryptionButton;
 
+    /**
+     * Constructs a new frame that is initially invisible.
+     */
     public Frame() {
         size = new Dimension(750, 500);
 
@@ -64,6 +70,9 @@ public class Frame extends JFrame implements ActionListener {
         setVisible(true);
     }
 
+    /**
+     * Method to construct the content of this frame.
+     */
     private void constructContent() {
         titleComponent = new TitleComponent();
         inputFileComponent = new FilePickerComponent("Input", "Browse...", 1);
@@ -85,14 +94,29 @@ public class Frame extends JFrame implements ActionListener {
         decryptionButton.addActionListener(this);
     }
 
+    /**
+     * This is the main method which runs the frame for displaying this app.
+     *
+     * @param args unused.
+     */
     public static void main(String[] args) {
         new Frame();
     }
 
+    /**
+     * Gets the message component.
+     *
+     * @return the message component you want to display.
+     */
     public static MessageComponent getMessageComponent() {
         return messageComponent;
     }
 
+    /**
+     * Invoked when an action occurs.
+     *
+     * @param e the button you clicked.
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         JLabel messageField = messageComponent.getMessageField();
