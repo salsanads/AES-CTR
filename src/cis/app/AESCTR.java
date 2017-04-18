@@ -5,12 +5,22 @@ import cis.lib.AES;
 import java.math.BigInteger;
 import java.util.Arrays;
 
+/**
+ * Implementation of the AES CTR mode encryption and decryption using PKCS#5 padding in java.
+ */
 public class AESCTR {
     private final int BLOCK_SIZE_BYTES = 16;
     private final BigInteger DEFAULT_NONCE = new BigInteger("179425817");
     private final BigInteger INCREMENT = new BigInteger("1");
     private final AES AES = new AES();
 
+    /**
+     * AES encrypt plaintext using key previously set.
+     *
+     * @param plaintext the plaintext value to encrypt.
+     * @param key the 128-bit, 192-bit, or 256-bit key value to encrypt.
+     * @return the encrypted ciphertext value.
+     */
     public byte[] encrypt(byte[] plaintext, byte[] key) {
         BigInteger nonce = DEFAULT_NONCE;
         int numBlock = plaintext.length / BLOCK_SIZE_BYTES;
@@ -44,6 +54,13 @@ public class AESCTR {
         return ciphertext;
     }
 
+    /**
+     * AES decrypt ciphertext using key previously set.
+     *
+     * @param ciphertext the plaintext value to decrypt.
+     * @param key the 128-bit, 192-bit, or 256-bit key value to decrypt.
+     * @return the decrypted plaintext value.
+     */
     public byte[] decrypt(byte[] ciphertext, byte[] key) {
         byte[] paddedCiphertext = encrypt(ciphertext, key);
 
@@ -67,6 +84,12 @@ public class AESCTR {
         return paddedCiphertext;
     }
 
+    /**
+     * PKCS5Padding pads the plaintext by the method described in the PKCS#5 standards.
+     *
+     * @param initialBlock byte array containing the plaintext to be padded.
+     * @return the plaintext with padding.
+     */
     public byte[] pkcs5Padding(byte[] initialBlock) {
         byte[] result = new byte[BLOCK_SIZE_BYTES];
         byte padding = (byte) (BLOCK_SIZE_BYTES - initialBlock.length);
