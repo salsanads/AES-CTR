@@ -16,11 +16,13 @@ public class Frame extends JFrame implements ActionListener {
     private static FilePickerComponent keyFileComponent;
     private static HelpTextComponent helpTextComponent;
     private static FilePickerComponent outputFileComponent;
-    private static OptionComponent optionComponent;
-    private static ButtonComponent buttonComponent;
+
+    private static JPanel buttonContainer;
+    private static ButtonComponent encryptionButton;
+    private static ButtonComponent decryptionButton;
 
     public Frame() {
-        size = new Dimension(750, 525);
+        size = new Dimension(750, 500);
 
         setTitle("AES Calculator Using CTR Mode and PKCS#5");
         setMinimumSize(size);
@@ -55,13 +57,9 @@ public class Frame extends JFrame implements ActionListener {
         contentPane.add(outputFileComponent);
         layout.putConstraint(SpringLayout.NORTH, outputFileComponent, 5, SpringLayout.SOUTH, helpTextComponent);
 
-        contentPane.add(optionComponent);
-        layout.putConstraint(SpringLayout.NORTH, optionComponent, 20, SpringLayout.SOUTH, outputFileComponent);
-        layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, optionComponent, 0, SpringLayout.HORIZONTAL_CENTER, contentPane);
-
-        contentPane.add(buttonComponent);
-        layout.putConstraint(SpringLayout.NORTH, buttonComponent, 20, SpringLayout.SOUTH, optionComponent);
-        layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, buttonComponent, 0, SpringLayout.HORIZONTAL_CENTER, contentPane);
+        contentPane.add(buttonContainer);
+        layout.putConstraint(SpringLayout.NORTH, buttonContainer, 20, SpringLayout.SOUTH, outputFileComponent);
+        layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, buttonContainer, 0, SpringLayout.HORIZONTAL_CENTER, contentPane);
 
         setVisible(true);
     }
@@ -72,11 +70,19 @@ public class Frame extends JFrame implements ActionListener {
         keyFileComponent = new FilePickerComponent("Key", "Browse...", 1);
         outputFileComponent = new FilePickerComponent("Output", "Browse...", 2);
         helpTextComponent = new HelpTextComponent();
-        optionComponent = new OptionComponent();
-        buttonComponent = new ButtonComponent("Execute!");
+
+        buttonContainer = new JPanel();
+        buttonContainer.setLayout(new FlowLayout());
+        buttonContainer.setBackground(Color.BLACK);
+        encryptionButton = new ButtonComponent("Encrypt!", new Color(255, 100, 0));
+        decryptionButton = new ButtonComponent("Decrypt!", new Color(65,105,225));
+
         messageComponent = new MessageComponent();
 
-        buttonComponent.addActionListener(this);
+        buttonContainer.add(encryptionButton);
+        buttonContainer.add(decryptionButton);
+        encryptionButton.addActionListener(this);
+        decryptionButton.addActionListener(this);
     }
 
     public static void main(String[] args) {
@@ -89,34 +95,27 @@ public class Frame extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == buttonComponent) {
-            JLabel messageField = messageComponent.getMessageField();
-            messageField.setForeground(Color.RED);
+        JLabel messageField = messageComponent.getMessageField();
+        messageField.setForeground(Color.RED);
 
-            String inputFilePath = inputFileComponent.getSelectedFilePath();
-            String keyFilePath = keyFileComponent.getSelectedFilePath();
-            String outputFilePath = outputFileComponent.getSelectedFilePath();
+        String inputFilePath = inputFileComponent.getSelectedFilePath();
+        String keyFilePath = keyFileComponent.getSelectedFilePath();
+        String outputFilePath = outputFileComponent.getSelectedFilePath();
 
-            boolean isEcryptSelected = optionComponent.isEncryptSelected();
-            boolean isDecryptSelected = optionComponent.isDecryptSelected();
-
-            if (inputFilePath.equals("")) {
-                messageField.setText("Please pick input file!");
-            } else if (keyFilePath.equals("")) {
-                messageField.setText("Please pick key file!");
-            } else if (outputFilePath.equals("")) {
-                messageField.setText("Please pick output file!");
-            } else {
-                if (isEcryptSelected) {
-                    messageField.setForeground(Color.YELLOW);
-                    messageField.setText("Doing encryption, please wait!");
-                    AESCTRDriver.doEncryption(inputFilePath, keyFilePath, outputFilePath);
-                } else if (isDecryptSelected) {
-                    messageField.setText("Doing decryption, please wait!");
-                    AESCTRDriver.doDecryption(inputFilePath, keyFilePath, outputFilePath);
-                } else {
-                    messageField.setText("Please choose Encrypt or Decrypt!");
-                }
+        if (inputFilePath.equals("")) {
+            messageField.setText("Please pick input file!");
+        } else if (keyFilePath.equals("")) {
+            messageField.setText("Please pick key file!");
+        } else if (outputFilePath.equals("")) {
+            messageField.setText("Please pick output file!");
+        } else {
+            if (e.getSource() == encryptionButton) {
+                messageField.setForeground(Color.YELLOW);
+                messageField.setText("Doing encryption, please wait!");
+                AESCTRDriver.doEncryption(inputFilePath, keyFilePath, outputFilePath);
+            } else if (e.getSource() == decryptionButton) {
+                messageField.setText("Doing decryption, please wait!");
+                AESCTRDriver.doDecryption(inputFilePath, keyFilePath, outputFilePath);
             }
         }
     }
