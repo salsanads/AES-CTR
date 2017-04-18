@@ -8,7 +8,7 @@ public class MessageComponent extends JPanel {
 
     public MessageComponent() {
         messageField = new JLabel(" ");
-        messageField.setFont(new Font("SansSerif", Font.PLAIN, 14));
+        messageField.setFont(new Font("Consolas", Font.PLAIN, 14));
         messageField.setForeground(Color.WHITE);
         add(messageField);
 

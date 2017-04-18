@@ -11,12 +11,13 @@ public class Frame extends JFrame implements ActionListener {
     private static Dimension size;
 
     private static TitleComponent titleComponent;
+    private static MessageComponent messageComponent;
     private static FilePickerComponent inputFileComponent;
     private static FilePickerComponent keyFileComponent;
+    private static HelpTextComponent helpTextComponent;
     private static FilePickerComponent outputFileComponent;
     private static OptionComponent optionComponent;
     private static ButtonComponent buttonComponent;
-    private static MessageComponent messageComponent;
 
     public Frame() {
         size = new Dimension(750, 525);
@@ -47,8 +48,12 @@ public class Frame extends JFrame implements ActionListener {
         contentPane.add(keyFileComponent);
         layout.putConstraint(SpringLayout.NORTH, keyFileComponent, 20, SpringLayout.SOUTH, inputFileComponent);
 
+        contentPane.add(helpTextComponent);
+        layout.putConstraint(SpringLayout.NORTH, helpTextComponent, 0, SpringLayout.SOUTH, keyFileComponent);
+        layout.putConstraint(SpringLayout.WEST, helpTextComponent, 220, SpringLayout.WEST, contentPane);
+
         contentPane.add(outputFileComponent);
-        layout.putConstraint(SpringLayout.NORTH, outputFileComponent, 20, SpringLayout.SOUTH, keyFileComponent);
+        layout.putConstraint(SpringLayout.NORTH, outputFileComponent, 5, SpringLayout.SOUTH, helpTextComponent);
 
         contentPane.add(optionComponent);
         layout.putConstraint(SpringLayout.NORTH, optionComponent, 20, SpringLayout.SOUTH, outputFileComponent);
@@ -66,6 +71,7 @@ public class Frame extends JFrame implements ActionListener {
         inputFileComponent = new FilePickerComponent("Input", "Browse...", 1);
         keyFileComponent = new FilePickerComponent("Key", "Browse...", 1);
         outputFileComponent = new FilePickerComponent("Output", "Browse...", 2);
+        helpTextComponent = new HelpTextComponent();
         optionComponent = new OptionComponent();
         buttonComponent = new ButtonComponent("Execute!");
         messageComponent = new MessageComponent();
