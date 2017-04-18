@@ -9,13 +9,13 @@ public class OptionComponent extends JPanel {
 
     public OptionComponent() {
         encryptOption = new JRadioButton("Encrypt");
-        encryptOption.setFont(new Font("SansSerif", Font.PLAIN, 14));
+        encryptOption.setFont(new Font("Consolas", Font.PLAIN, 14));
         encryptOption.setForeground(Color.WHITE);
         encryptOption.setBackground(Color.BLACK);
         encryptOption.setFocusPainted(false);
 
         decryptOption = new JRadioButton("Decrypt");
-        decryptOption.setFont(new Font("SansSerif", Font.PLAIN, 14));
+        decryptOption.setFont(new Font("Consolas", Font.PLAIN, 14));
         decryptOption.setForeground(Color.WHITE);
         decryptOption.setBackground(Color.BLACK);
         decryptOption.setFocusPainted(false);

@@ -7,8 +7,8 @@ public class ButtonComponent extends JButton {
     public ButtonComponent(String text) {
         super(text);
         setForeground(Color.WHITE);
-        setFont(new Font("SansSerif", Font.PLAIN, 16));
-        setBackground(Color.BLUE);
+        setFont(new Font("Consolas", Font.PLAIN, 16));
+        setBackground(new Color(255, 100, 0));
         setFocusPainted(false);
     }
 }

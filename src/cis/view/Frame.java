@@ -9,9 +9,8 @@ import java.awt.event.ActionListener;
 
 public class Frame extends JFrame implements ActionListener {
     private static Dimension size;
-    private static JPanel container;
-    private static JButton button;
 
+    private static TitleComponent titleComponent;
     private static FilePickerComponent inputFileComponent;
     private static FilePickerComponent keyFileComponent;
     private static FilePickerComponent outputFileComponent;
@@ -20,39 +19,58 @@ public class Frame extends JFrame implements ActionListener {
     private static MessageComponent messageComponent;
 
     public Frame() {
-        size = new Dimension(600, 300);
+        size = new Dimension(750, 525);
 
-        setTitle("AES Calculator with CTR Mode and PKCS#5");
+        setTitle("AES Calculator Using CTR Mode and PKCS#5");
         setMinimumSize(size);
-        getContentPane().setBackground(Color.BLACK);
+        setResizable(false);
+        setLocationRelativeTo(null);
 
         constructContent();
 
-        add(container, BorderLayout.CENTER);
+        Container contentPane = getContentPane();
+        contentPane.setBackground(Color.BLACK);
+        SpringLayout layout = new SpringLayout();
+        contentPane.setLayout(layout);
+
+        contentPane.add(titleComponent);
+        layout.putConstraint(SpringLayout.NORTH, titleComponent, 40, SpringLayout.NORTH, contentPane);
+        layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, titleComponent, 0, SpringLayout.HORIZONTAL_CENTER, contentPane);
+
+        contentPane.add(messageComponent);
+        layout.putConstraint(SpringLayout.NORTH, messageComponent, 15, SpringLayout.SOUTH, titleComponent);
+        layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, messageComponent, 0, SpringLayout.HORIZONTAL_CENTER, contentPane);
+
+        contentPane.add(inputFileComponent);
+        layout.putConstraint(SpringLayout.NORTH, inputFileComponent, 15, SpringLayout.SOUTH, messageComponent);
+
+        contentPane.add(keyFileComponent);
+        layout.putConstraint(SpringLayout.NORTH, keyFileComponent, 20, SpringLayout.SOUTH, inputFileComponent);
+
+        contentPane.add(outputFileComponent);
+        layout.putConstraint(SpringLayout.NORTH, outputFileComponent, 20, SpringLayout.SOUTH, keyFileComponent);
+
+        contentPane.add(optionComponent);
+        layout.putConstraint(SpringLayout.NORTH, optionComponent, 20, SpringLayout.SOUTH, outputFileComponent);
+        layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, optionComponent, 0, SpringLayout.HORIZONTAL_CENTER, contentPane);
+
+        contentPane.add(buttonComponent);
+        layout.putConstraint(SpringLayout.NORTH, buttonComponent, 20, SpringLayout.SOUTH, optionComponent);
+        layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, buttonComponent, 0, SpringLayout.HORIZONTAL_CENTER, contentPane);
 
         setVisible(true);
     }
 
     private void constructContent() {
-        container = new JPanel();
-        container.setLayout(new FlowLayout());
-        container.setBackground(Color.BLACK);
-        container.setPreferredSize(size);
-
-        inputFileComponent = new FilePickerComponent("Input file", "Browse...", 1);
-        keyFileComponent = new FilePickerComponent("Key file", "Browse...", 1);
-        outputFileComponent = new FilePickerComponent("Output file", "Browse...", 2);
+        titleComponent = new TitleComponent();
+        inputFileComponent = new FilePickerComponent("Input", "Browse...", 1);
+        keyFileComponent = new FilePickerComponent("Key", "Browse...", 1);
+        outputFileComponent = new FilePickerComponent("Output", "Browse...", 2);
         optionComponent = new OptionComponent();
         buttonComponent = new ButtonComponent("Execute!");
-        buttonComponent.addActionListener(this);
         messageComponent = new MessageComponent();
 
-        container.add(inputFileComponent);
-        container.add(keyFileComponent);
-        container.add(outputFileComponent);
-        container.add(optionComponent);
-        container.add(buttonComponent);
-        container.add(messageComponent);
+        buttonComponent.addActionListener(this);
     }
 
     public static void main(String[] args) {
@@ -84,8 +102,11 @@ public class Frame extends JFrame implements ActionListener {
                 messageField.setText("Please pick output file!");
             } else {
                 if (isEcryptSelected) {
+                    messageField.setForeground(Color.YELLOW);
+                    messageField.setText("Doing encryption, please wait!");
                     AESCTRDriver.doEncryption(inputFilePath, keyFilePath, outputFilePath);
                 } else if (isDecryptSelected) {
+                    messageField.setText("Doing decryption, please wait!");
                     AESCTRDriver.doDecryption(inputFilePath, keyFilePath, outputFilePath);
                 } else {
                     messageField.setText("Please choose Encrypt or Decrypt!");

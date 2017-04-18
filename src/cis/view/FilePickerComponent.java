@@ -4,11 +4,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.*;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
 
 public class FilePickerComponent extends JPanel {
     private JLabel label;
@@ -25,16 +23,22 @@ public class FilePickerComponent extends JPanel {
         this.mode = mode;
         fileChooser = new JFileChooser();
 
-        setLayout(new FlowLayout(FlowLayout.CENTER, 30, 0));
+        setLayout(new BorderLayout());
         setBackground(Color.BLACK);
+        setBorder(BorderFactory.createEmptyBorder(0, 150, 0, 150));
 
         label = new JLabel(textFieldLabel);
         label.setForeground(Color.WHITE);
+        label.setFont(new Font("Consolas", Font.PLAIN, 14));
+        label.setPreferredSize(new Dimension(75, 40));
 
         textField = new JTextField(30);
+        textField.setFont(new Font("Consolas", Font.PLAIN, 14));
+        textField.setBorder(BorderFactory.createCompoundBorder(null, BorderFactory.createEmptyBorder(3, 3, 3, 3)));
+
         button = new JButton(buttonLabel);
         button.setForeground(Color.WHITE);
-        button.setFont(new Font("SansSerif", Font.PLAIN, 14));
+        button.setFont(new Font("Consolas", Font.PLAIN, 14));
         button.setOpaque(false);
         button.setContentAreaFilled(false);
         button.setFocusPainted(false);
@@ -46,9 +50,9 @@ public class FilePickerComponent extends JPanel {
             }
         });
 
-        add(label);
-        add(textField);
-        add(button);
+        add(label, BorderLayout.LINE_START);
+        add(textField, BorderLayout.CENTER);
+        add(button, BorderLayout.LINE_END);
 
     }
 
