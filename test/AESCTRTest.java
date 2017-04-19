@@ -33,6 +33,27 @@ public class AESCTRTest {
     }
 
     /**
+     *  Tests 16 bytes key incomplete block.
+     */
+    @Test
+    public void test16BytesKeyIncompleteBlock() {
+        String keytext = "000102030405060708090a0b0c0d0e0f";
+        byte[] key = Util.hex2byte(keytext);
+
+        String plainString = "00010203040506070809";
+        byte[] plaintext = Util.hex2byte(plainString);
+
+        String cipherString = "9ff5aed973b1cc6d7bdc7bb13ea84383";
+        byte[] ciphertext = Util.hex2byte(cipherString);
+
+        byte[] resCiphertext = aesCtr.encrypt(plaintext, key);
+        byte[] resPlaintext = aesCtr.decrypt(ciphertext, key);
+
+        assertEquals(Util.toHEX1(ciphertext), Util.toHEX1(resCiphertext));
+        assertEquals((Util.toHEX1(plaintext)), Util.toHEX1(resPlaintext));
+    }
+
+    /**
      *  Tests 16 bytes key complete block string.
      */
     @Test
@@ -51,6 +72,48 @@ public class AESCTRTest {
 
         assertEquals(Util.toHEX1(ciphertext), Util.toHEX1(resCiphertext));
         assertEquals(Util.toHEX1(plaintext), Util.toHEX1(resPlaintext));
+    }
+
+    /**
+     *  Tests 24 bytes key complete block.
+     */
+    @Test
+    public void test24BytesKeyCompleteBlock() {
+        String keytext = "000102030405060708090a0b0c0d0e0f0001020304050607";
+        byte[] key = Util.hex2byte(keytext);
+
+        String plainString = "000102030405060708090a0b0c0d0e0f";
+        byte[] plaintext = Util.hex2byte(plainString);
+
+        String cipherString = "ef6dc0994ff494be65d543f444192bfd";
+        byte[] ciphertext = Util.hex2byte(cipherString);
+
+        byte[] resCiphertext = aesCtr.encrypt(plaintext, key);
+        byte[] resPlaintext = aesCtr.decrypt(ciphertext, key);
+
+        assertEquals(Util.toHEX1(ciphertext), Util.toHEX1(resCiphertext));
+        assertEquals((Util.toHEX1(plaintext)), Util.toHEX1(resPlaintext));
+    }
+
+    /**
+     *  Tests 24 bytes key incomplete block.
+     */
+    @Test
+    public void test24BytesKeyIncompleteBlock() {
+        String keytext = "000102030405060708090a0b0c0d0e0f0001020304050607";
+        byte[] key = Util.hex2byte(keytext);
+
+        String plainString = "00010203040506070809";
+        byte[] plaintext = Util.hex2byte(plainString);
+
+        String cipherString = "ef6dc0994ff494be65d54ff94e1223f4";
+        byte[] ciphertext = Util.hex2byte(cipherString);
+
+        byte[] resCiphertext = aesCtr.encrypt(plaintext, key);
+        byte[] resPlaintext = aesCtr.decrypt(ciphertext, key);
+
+        assertEquals(Util.toHEX1(ciphertext), Util.toHEX1(resCiphertext));
+        assertEquals((Util.toHEX1(plaintext)), Util.toHEX1(resPlaintext));
     }
 
     /**
