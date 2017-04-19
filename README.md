@@ -14,6 +14,6 @@ AES Calculator Using CTR Mode and PKCS#5
 5. Finally, choose the operation you want to do, `Encrypt!` or `Decrypt!` button, depending on whether you want the input file to be encrypted or decrypted. 
 
 ## Download Now
-You can download this code in [here](https://github.com/salsanads/AES-CTR) and jar in [here](bit.ly/AES-CTR).
+You can download this code in [here](https://github.com/salsanads/AES-CTR) and jar in [here](http://bit.ly/AES-CTR).
 
 
