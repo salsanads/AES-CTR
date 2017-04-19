@@ -49,7 +49,6 @@ public class AESCTRTest {
         byte[] resCiphertext = aesCtr.encrypt(plaintext, key);
         byte[] resPlaintext = aesCtr.decrypt(ciphertext, key);
 
-        System.out.println(Util.toHEX1(resPlaintext));
         assertEquals(Util.toHEX1(ciphertext), Util.toHEX1(resCiphertext));
         assertEquals(Util.toHEX1(plaintext), Util.toHEX1(resPlaintext));
     }
