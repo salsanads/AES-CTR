@@ -137,15 +137,17 @@ public class Frame extends JFrame implements ActionListener {
             setEnabledComponents(false);
 
             // create new thread to separate between GUI processes with encryption/decryption processes
-            new Thread(() -> {
-                if (e.getSource() == encryptionButton) {
-                    messageField.setText("Doing encryption, please wait!");
-                    AESCTRDriver.doEncryption(inputFilePath, keyFilePath, outputFilePath);
-                } else if (e.getSource() == decryptionButton) {
-                    messageField.setText("Doing decryption, please wait!");
-                    AESCTRDriver.doDecryption(inputFilePath, keyFilePath, outputFilePath);
+            new Thread(new Runnable() {
+                public void run() {
+                    if (e.getSource() == encryptionButton) {
+                        messageField.setText("Doing encryption, please wait!");
+                        AESCTRDriver.doEncryption(inputFilePath, keyFilePath, outputFilePath);
+                    } else if (e.getSource() == decryptionButton) {
+                        messageField.setText("Doing decryption, please wait!");
+                        AESCTRDriver.doDecryption(inputFilePath, keyFilePath, outputFilePath);
+                    }
+                    setEnabledComponents(true);
                 }
-                setEnabledComponents(true);
             }).start();
         }
     }
