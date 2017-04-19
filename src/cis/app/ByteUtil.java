@@ -1,9 +1,5 @@
 package cis.app;
 
-import cis.view.Frame;
-
-import javax.swing.*;
-import java.awt.*;
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
 
@@ -13,8 +9,6 @@ import java.nio.ByteBuffer;
  */
 public class ByteUtil {
     private static final int AES_BLOCK_SIZE = 16;
-
-    private final static JLabel messageField = Frame.getMessageComponent().getMessageField();
 
     /**
      * Utility method to convert a hexadecimal to a byte.
