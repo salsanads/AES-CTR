@@ -28,17 +28,15 @@ public class ByteUtil {
     }
 
     /**
-     * Utility method to convert a big integer to the bytes.
+     * Utility method to convert a big integer to array of 16 bytes.
      *
-     * @param bigInt a big integer to be converted into bytes.
+     * @param bigInt a big integer to be converted into array of 16 bytes.
      * @return byte representation of big integer.
      */
     static byte[] to16Bytes(BigInteger bigInt) {
         byte[] bigIntByte = bigInt.toByteArray();
         byte[] result = new byte[AES_BLOCK_SIZE];
         if (bigIntByte.length > AES_BLOCK_SIZE) {
-            messageField.setForeground(Color.RED);
-            messageField.setText("Cannot continue the process, the counter is exceed 16 bytes.");
             return null;
         }
         System.arraycopy(bigIntByte, 0, result, AES_BLOCK_SIZE - bigIntByte.length, bigIntByte.length);

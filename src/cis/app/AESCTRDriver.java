@@ -38,9 +38,7 @@ public class AESCTRDriver {
             byte[] key = Util.hex2byte(keytext);
 
             byte[] ciphertext = AESCTR.encrypt(plaintext, key);
-            if (ciphertext != null) {
-                writeBytesToFile(ciphertext, ciphertextPath);
-            }
+            writeBytesToFile(ciphertext, ciphertextPath);
 
             messageField.setForeground(Color.GREEN);
             messageField.setText("Encryption succeed.");
@@ -69,9 +67,7 @@ public class AESCTRDriver {
             byte[] key = Util.hex2byte(keytext);
 
             byte[] plaintext = AESCTR.decrypt(ciphertext, key);
-            if (plaintext != null) {
-                writeBytesToFile(plaintext, plaintextPath);
-            }
+            writeBytesToFile(plaintext, plaintextPath);
 
             messageField.setForeground(Color.GREEN);
             messageField.setText("Decryption succeed.");

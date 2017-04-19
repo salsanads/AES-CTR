@@ -35,8 +35,10 @@ public class AESCTR {
         for (int i = 0; i < plaintext.length; i += BLOCK_SIZE_BYTES) {
             byte[] nonceArray = ByteUtil.to16Bytes(nonce);
 
+            // reset the nonce if exceed 16 bytes
             if (nonceArray == null) {
-                return null;
+                nonce = new BigInteger("0");
+                nonceArray = ByteUtil.to16Bytes(nonce);
             }
 
             byte[] curPlainBlock;
@@ -70,11 +72,6 @@ public class AESCTR {
     public byte[] decrypt(byte[] ciphertext, byte[] key) {
         // CTR decryption is same with encryption
         byte[] plaintext = encrypt(ciphertext, key);
-
-        if (plaintext == null) {
-            return null;
-        }
-
         return pkcs5RemovePadding(plaintext);
     }
 
