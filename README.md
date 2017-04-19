@@ -5,6 +5,9 @@ AES Calculator Using CTR Mode and PKCS#5
 <p style="text-align:justify">
     This AES Calculator Using CTR Mode and PKCS#5 is a simple application that makes it easy to encrypt and decrypt your private data, such as photos, videos, and other documents without sacrificing ability to browse through them. This AES calculator uses standard AES-128, 192, or 256 bit encryption decryption. When you open this calculator, you will be asked to browse some files and locate the output file.
 </p>
+<p>
+    Working best at Java SDK version 1.8.
+</p>
 
 ## Usage
 1. Open and run `AES-CTR.jar`.
