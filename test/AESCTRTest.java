@@ -4,10 +4,16 @@ import cis.app.AESCTR;
 import cis.lib.Util;
 import org.junit.Test;
 
+/**
+ * Collection of tests for AESCTR class.
+ */
 public class AESCTRTest {
 
     private AESCTR aesCtr = new AESCTR();
 
+    /**
+     *  Tests 16 bytes key complete block.
+     */
     @Test
     public void test16BytesKeyCompleteBlock() {
         String keytext = "000102030405060708090a0b0c0d0e0f";
@@ -26,6 +32,9 @@ public class AESCTRTest {
         assertEquals(Util.toHEX1(plaintext), Util.toHEX1(resPlaintext));
     }
 
+    /**
+     *  Tests 16 bytes key complete block string.
+     */
     @Test
     public void test16BytesKeyCompleteBlockString() {
         String keytext = "000102030405060708090a0b0c0d0e0f";
@@ -45,6 +54,9 @@ public class AESCTRTest {
         assertEquals(Util.toHEX1(plaintext), Util.toHEX1(resPlaintext));
     }
 
+    /**
+     *  Tests 32 bytes key complete block.
+     */
     @Test
     public void test32BytesKeyCompleteBlock() {
         String keytext = "000102030405060708090a0b0c0d0e0f000102030405060708090a0b0c0d0e0f";
@@ -63,6 +75,9 @@ public class AESCTRTest {
         assertEquals(Util.toHEX1(plaintext), Util.toHEX1(resPlaintext));
     }
 
+    /**
+     *  Tests 32 bytes key incomplete block.
+     */
     @Test
     public void test32BytesKeyIncompleteBlock() {
         String keytext = "000102030405060708090a0b0c0d0e0f000102030405060708090a0b0c0d0e0f";
