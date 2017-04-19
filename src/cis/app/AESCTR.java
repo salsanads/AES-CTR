@@ -75,6 +75,33 @@ public class AESCTR {
             return null;
         }
 
+        return pkcs5RemovePadding(plaintext);
+    }
+
+    /**
+     * PKCS5Padding pads the plaintext by the method described in the PKCS#5 standards.
+     *
+     * @param initialBlock byte array containing the plaintext to be padded.
+     * @return the plaintext with padding.
+     */
+    public byte[] pkcs5Padding(byte[] initialBlock) {
+        byte[] result = new byte[BLOCK_SIZE_BYTES];
+        byte padding = (byte) (BLOCK_SIZE_BYTES - initialBlock.length);
+
+        // fill the result array with padding first
+        Arrays.fill(result, padding);
+        // replace the elements of result array along the block length with elements from the block
+        System.arraycopy(initialBlock, 0, result, 0, initialBlock.length);
+        return result;
+    }
+
+    /**
+     * PKCS5Padding removes padding that found in plaintext.
+     *
+     * @param plaintext byte array containing the plaintext and may be ended with padding.
+     * @return the plaintext without any padding.
+     */
+    public byte[] pkcs5RemovePadding(byte[] plaintext) {
         int numBlock = plaintext.length / BLOCK_SIZE_BYTES;
         int firstIndexOfLastBlock = (numBlock - 1) * BLOCK_SIZE_BYTES;
         // get the last block to be checked whether padded or not
@@ -94,22 +121,5 @@ public class AESCTR {
             }
         }
         return plaintext;
-    }
-
-    /**
-     * PKCS5Padding pads the plaintext by the method described in the PKCS#5 standards.
-     *
-     * @param initialBlock byte array containing the plaintext to be padded.
-     * @return the plaintext with padding.
-     */
-    public byte[] pkcs5Padding(byte[] initialBlock) {
-        byte[] result = new byte[BLOCK_SIZE_BYTES];
-        byte padding = (byte) (BLOCK_SIZE_BYTES - initialBlock.length);
-
-        // fill the result array with padding first
-        Arrays.fill(result, padding);
-        // replace the elements of result array along the block length with elements from the block
-        System.arraycopy(initialBlock, 0, result, 0, initialBlock.length);
-        return result;
     }
 }
