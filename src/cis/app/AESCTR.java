@@ -31,6 +31,7 @@ public class AESCTR {
 
         AES.setKey(key);
 
+        // iterate through plaintext block
         for (int i = 0; i < plaintext.length; i += BLOCK_SIZE_BYTES) {
             byte[] nonceArray = ByteUtil.to16Bytes(nonce);
 
@@ -39,16 +40,21 @@ public class AESCTR {
             }
 
             byte[] curPlainBlock;
+            // check whether current plaintext block is the last block and doesn't contain 16 bytes
             if (i == BLOCK_SIZE_BYTES * numBlock && numLeftBytes != 0) {
                 byte[] leftBytes = Arrays.copyOfRange(plaintext, i, i + numLeftBytes);
+                // do padding since the original last block doesn't contain 16 bytes
                 curPlainBlock =  pkcs5Padding(leftBytes);
             } else {
                 curPlainBlock = Arrays.copyOfRange(plaintext, i, i + BLOCK_SIZE_BYTES);
             }
+            // encrypt the nonce using AES
             byte[] curEncryptedNonce = AES.encrypt(nonceArray);
+            // xor the encryption result with current plaintext block
             byte[] xorResult = ByteUtil.xor16Bytes(curPlainBlock, curEncryptedNonce);
 
             System.arraycopy(xorResult, 0, ciphertext, i, BLOCK_SIZE_BYTES);
+            // increment the nonce for the next block
             nonce = nonce.add(INCREMENT);
         }
         return ciphertext;
@@ -62,26 +68,32 @@ public class AESCTR {
      * @return the decrypted plaintext value.
      */
     public byte[] decrypt(byte[] ciphertext, byte[] key) {
-        byte[] paddedCiphertext = encrypt(ciphertext, key);
+        // CTR decryption is same with encryption
+        byte[] plaintext = encrypt(ciphertext, key);
 
-        if (paddedCiphertext == null) {
+        if (plaintext == null) {
             return null;
         }
 
-        int numBlock = paddedCiphertext.length / BLOCK_SIZE_BYTES;
+        int numBlock = plaintext.length / BLOCK_SIZE_BYTES;
         int firstIndexOfLastBlock = (numBlock - 1) * BLOCK_SIZE_BYTES;
-        byte[] lastBlock = Arrays.copyOfRange(paddedCiphertext, firstIndexOfLastBlock, paddedCiphertext.length);
+        // get the last block to be checked whether padded or not
+        byte[] lastBlock = Arrays.copyOfRange(plaintext, firstIndexOfLastBlock, plaintext.length);
+
+        // iterate through the possibility of padding
         for (int i = 1; i < BLOCK_SIZE_BYTES; i++) {
-            byte pad = ByteUtil.intHexToByte(i);
+            byte padding = ByteUtil.intHexToByte(i);
+            // iterate along the padding size
             for (int j = BLOCK_SIZE_BYTES - 1; j > BLOCK_SIZE_BYTES - 1 - i; j--) {
-                if (lastBlock[j] != pad) {
+                if (lastBlock[j] != padding) {
                     break;
-                } else if (lastBlock[j - 1] == pad) {
-                    return Arrays.copyOfRange(paddedCiphertext, 0, paddedCiphertext.length - i);
+                } else if (lastBlock[j - 1] == padding) {
+                    // truncate the plaintext to remove padding
+                    return Arrays.copyOfRange(plaintext, 0, plaintext.length - i);
                 }
             }
         }
-        return paddedCiphertext;
+        return plaintext;
     }
 
     /**
@@ -93,7 +105,10 @@ public class AESCTR {
     public byte[] pkcs5Padding(byte[] initialBlock) {
         byte[] result = new byte[BLOCK_SIZE_BYTES];
         byte padding = (byte) (BLOCK_SIZE_BYTES - initialBlock.length);
+
+        // fill the result array with padding first
         Arrays.fill(result, padding);
+        // replace the elements of result array along the block length with elements from the block
         System.arraycopy(initialBlock, 0, result, 0, initialBlock.length);
         return result;
     }
