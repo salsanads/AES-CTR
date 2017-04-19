@@ -133,14 +133,38 @@ public class Frame extends JFrame implements ActionListener {
         } else if (outputFilePath.equals("")) {
             messageField.setText("Please pick output file!");
         } else {
-            if (e.getSource() == encryptionButton) {
-                messageField.setForeground(Color.YELLOW);
-                messageField.setText("Doing encryption, please wait!");
-                AESCTRDriver.doEncryption(inputFilePath, keyFilePath, outputFilePath);
-            } else if (e.getSource() == decryptionButton) {
-                messageField.setText("Doing decryption, please wait!");
-                AESCTRDriver.doDecryption(inputFilePath, keyFilePath, outputFilePath);
-            }
+            messageField.setForeground(Color.YELLOW);
+            setEnabledComponents(false);
+
+            // create new thread to separate between GUI processes with encryption/decryption processes
+            new Thread(() -> {
+                if (e.getSource() == encryptionButton) {
+                    messageField.setText("Doing encryption, please wait!");
+                    AESCTRDriver.doEncryption(inputFilePath, keyFilePath, outputFilePath);
+                } else if (e.getSource() == decryptionButton) {
+                    messageField.setText("Doing decryption, please wait!");
+                    AESCTRDriver.doDecryption(inputFilePath, keyFilePath, outputFilePath);
+                }
+                setEnabledComponents(true);
+            }).start();
         }
+    }
+
+    /**
+     * Sets all of text fields and buttons on frame to be enabled or disabled.
+     *
+     * @param isEnabled the boolean condition for enabling all the text fields and buttons on frame.
+     */
+    private static void setEnabledComponents(boolean isEnabled) {
+        inputFileComponent.getTextField().setEnabled(isEnabled);
+        keyFileComponent.getTextField().setEnabled(isEnabled);
+        outputFileComponent.getTextField().setEnabled(isEnabled);
+
+        inputFileComponent.getButton().setEnabled(isEnabled);
+        keyFileComponent.getButton().setEnabled(isEnabled);
+        outputFileComponent.getButton().setEnabled(isEnabled);
+
+        encryptionButton.setEnabled(isEnabled);
+        decryptionButton.setEnabled(isEnabled);
     }
 }

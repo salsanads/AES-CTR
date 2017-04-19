@@ -90,4 +90,22 @@ public class FilePickerComponent extends JPanel {
     public String getSelectedFilePath() {
         return textField.getText();
     }
+
+    /**
+     * Gets a text field from file picker.
+     *
+     * @return the text field part of file picker.
+     */
+    public JTextField getTextField() {
+        return textField;
+    }
+
+    /**
+     * Gets a button from file picker.
+     *
+     * @return the button part of file picker.
+     */
+    public JButton getButton() {
+        return button;
+    }
 }
