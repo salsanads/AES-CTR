@@ -72,11 +72,11 @@ public class FilePickerComponent extends JPanel {
      */
     private void buttonActionPerformed(ActionEvent evt) {
         if (mode == MODE_OPEN) {
-            if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
                 textField.setText(fileChooser.getSelectedFile().getAbsolutePath());
             }
         } else if (mode == MODE_SAVE) {
-            if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+            if (fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
                 textField.setText(fileChooser.getSelectedFile().getAbsolutePath());
             }
         }
