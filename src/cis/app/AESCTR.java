@@ -111,7 +111,7 @@ public class AESCTR {
             for (int j = BLOCK_SIZE_BYTES - 1; j > BLOCK_SIZE_BYTES - 1 - i; j--) {
                 if (lastBlock[j] != padding) {
                     break;
-                } else if (lastBlock[j - 1] == padding) {
+                } else if (lastBlock[j - 1] != padding) {
                     // truncate the plaintext to remove padding
                     return Arrays.copyOfRange(plaintext, 0, plaintext.length - i);
                 }
